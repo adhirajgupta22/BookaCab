@@ -136,7 +136,7 @@ The request body should be in JSON format and include the following fields:
   - `vehicleType` (string, required): Type of vehicle (must be 'car', 'motorcycle', or 'auto')
 
 
-## `/captains/register` Endpoint
+## `/drivers/register` Endpoint
 
 ### Description
 
@@ -145,6 +145,11 @@ Registers a new captain by creating a captain account with the provided informat
 ### HTTP Method
 
 `POST`
+
+### Code Request
+
+- 201 -> on successfull registration of driver.
+- 400 -> either there is validation error coming from express-validator or the user already exists.
 
 ### Request Body
 
@@ -162,8 +167,8 @@ The request body should be in JSON format and include the following fields:
   - `vehicleType` (string, required): Type of vehicle (must be 'car', 'motorcycle', or 'auto').
 
 ### Example Response
-
-- `captain` (object):
+Whole response is a object containing the driver object and token string
+- `driver` (object):
   - `fullname` (object).
     - `firstname` (string): Captain's first name (minimum 3 characters).
     - `lastname` (string): Captain's last name (minimum 3 characters).   
@@ -176,7 +181,7 @@ The request body should be in JSON format and include the following fields:
     - `vehicleType` (string): Type of vehicle.
 - `token` (String): JWT Token
 
-## `/captains/login` Endpoint
+## `/drivers/login` Endpoint
 
 ### Description
 
@@ -185,6 +190,11 @@ Authenticates a captain using their email and password, returning a JWT token up
 ### HTTP Method
 
 `POST`
+
+### Code request
+
+- 201 -> on sucessfull login
+- 401 -> 'Invalid email or password'
 
 ### Endpoint
 
@@ -212,7 +222,7 @@ The request body should be in JSON format and include the following fields:
     - `vehicleType` (string): Type of vehicle.
 - `token` (String): JWT Token
 
-## `/captains/profile` Endpoint
+## `/drivers/profile` Endpoint
 
 ### Description
 
@@ -222,6 +232,10 @@ Retrieves the profile information of the currently authenticated captain.
 
 `GET`
 
+### Status code
+
+- 200 -> Returns the valid driver
+
 ### Authentication
 
 Requires a valid JWT token in the Authorization header:
@@ -229,7 +243,7 @@ Requires a valid JWT token in the Authorization header:
 
 ### Example Response
 
-- `captain` (object):
+- `driver` (object):
   - `fullname` (object).
     - `firstname` (string): Captain's first name (minimum 3 characters).
     - `lastname` (string): Captain's last name (minimum 3 characters).   
@@ -240,7 +254,7 @@ Requires a valid JWT token in the Authorization header:
     - `capacity` (number): Vehicle passenger capacity.
     - `vehicleType` (string): Type of vehicle.
 
-## `/captains/logout` Endpoint
+## `/drivers/logout` Endpoint
 
 ### Description
 

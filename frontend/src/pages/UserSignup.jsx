@@ -1,25 +1,43 @@
 import React,{useState} from 'react'
-import { Link } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import  { UserDataContext } from '../context/UserContext';
+
+
 
 const UserSignup = () => {
 
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
   const [firstName,setFirstName] = useState('');
-  const [lasttName,setLastName] = useState('');
-  const [userData,setUserData] = useState({});
+  const [lastName,setLastName] = useState('');
+  // const [userData,setUserData] = useState({});
 
+  const navigate = useNavigate();
+  
+  const {user,setUser} = React.useContext(UserDataContext);
 
-  const submitHandler = (e)=>{
+  const submitHandler = async (e)=>{
       e.preventDefault();
-      setUserData({
-        fullName:{
+      const newUser = {
+        fullname:{
           firstname:firstName,
-          lastname: lasttName
+          lastname: lastName
         },
         email:email,
         password:password
-      })
+      }
+      
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser);
+      if (response.status === 201) {
+          const data = response.data;
+          setUser(data.user);
+          localStorage.setItem('token',data.token);
+          navigate('/login');   //after registering we move to the login page first
+          alert('Registration successful! Please login using your email and password.');
+      }
+
+
       setEmail('');
       setPassword('');
       setFirstName('');
@@ -48,7 +66,7 @@ const UserSignup = () => {
                 />
                 <input 
                     required
-                    value={lasttName}
+                    value={lastName}
                     onChange={(e)=>{
                       setLastName(e.target.value);
                     }}

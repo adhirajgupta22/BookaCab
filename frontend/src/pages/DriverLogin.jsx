@@ -1,20 +1,33 @@
-import React,{useState} from 'react'
+import React,{useState,useContext} from 'react'
 import { Link } from 'react-router-dom'
+import { DriverDataContext } from '../context/DriverContext'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const DriverLogin = () => {
 
-  const [email,setEmail] = useState('')
+    const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
-    const [driverData,setDriverData] = useState({})
 
-    const submitHandler = (e)=>{
-        e.preventDefault();
-        //console.log("hello");
-        setDriverData({
+    const {driver,setDriver} = useContext(DriverDataContext);
+    const navigate = useNavigate();
+
+    const submitHandler = async (e)=>{
+        e.preventDefault();  //this is to prevent the default behaviour of the form
+        
+        const driverData = {
             email:email,
             password:password
-        })
-        //console.log(userData);
+        } 
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/drivers/login`,driverData);
+        if(response.status === 200){
+            const data = response.data;
+
+            setDriver(data.driver);
+            localStorage.setItem('token',data.token);
+            navigate('/driver-home');
+        }
+
         setEmail('');
         setPassword('');
     }
