@@ -198,7 +198,7 @@ Authenticates a captain using their email and password, returning a JWT token up
 
 ### Endpoint
 
-`/captains/login`
+`/drivers/login`
 
 ### Request Body
 
@@ -209,7 +209,7 @@ The request body should be in JSON format and include the following fields:
 
 ### Example Response
 
-- `captain` (object):
+- `driver` (object):
   - `fullname` (object).
     - `firstname` (string): Captain's first name (minimum 3 characters).
     - `lastname` (string): Captain's last name (minimum 3 characters).   
